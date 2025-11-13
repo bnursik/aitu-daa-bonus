@@ -26,8 +26,12 @@ public class Main {
         System.out.println("Total MST weight = " + totalWeight);
         System.out.println();
 
-        // 2. Choose edge to remove (here: heaviest edge in MST)
-        Edge removed = Collections.max(mst, Comparator.comparingDouble(e -> e.w));
+        // 2. RANDOMLY choose an edge to remove from the MST
+        Random random = new Random(); // you can pass a seed e.g. new Random(42) for reproducible runs
+        int removeIndex = random.nextInt(mst.size());
+        Edge removed = mst.get(removeIndex);
+
+        System.out.println("Randomly selected edge index in MST: " + removeIndex);
         System.out.println("Removed edge from MST: " + removed);
 
         // 3. Components after removal
@@ -44,7 +48,7 @@ public class Main {
         }
         System.out.println();
 
-        // 4. Find replacement edge
+        // 4. Find replacement edge (lightest edge connecting different components)
         Edge replacement = MSTUtils.findReplacementEdge(g, comp);
         if (replacement == null) {
             System.out.println("No replacement edge found (graph disconnected).");
@@ -96,7 +100,7 @@ public class Main {
                 width,
                 height);
 
-        // Stage 3: MST after removal
+        // Stage 3: MST after random removal
         List<Edge> mstAfterRemoval = new ArrayList<>(mst);
         mstAfterRemoval.remove(removed);
         GraphRenderer.saveStageImage(
